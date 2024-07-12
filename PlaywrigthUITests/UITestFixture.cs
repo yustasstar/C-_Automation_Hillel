@@ -38,8 +38,14 @@ namespace PlaywrigthUITests
         [TearDown]
         public async Task Teardown()
         {
-            await page.CloseAsync();
-            await browser.CloseAsync();
+            if (page != null)
+            {
+                await page.CloseAsync();
+            }
+            if (browser != null)
+            {
+                await browser.CloseAsync();
+            }
         }
     }
 }
