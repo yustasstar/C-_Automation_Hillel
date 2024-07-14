@@ -38,6 +38,15 @@ internal class WebTablesPage(IPage page)
         Assert.That(headerList, Does.Contain(headerName), $"The header '{headerName}' was not found in the table headers.");
     }
 
+    public async Task VerifyFirstRowCellContent(string contentValue)
+    {
+        var row = page.Locator(".rt-tr-group").First;
+        var cells = await row.Locator(".rt-td").AllInnerTextsAsync();
+        var cellList = cells.ToList();
+
+        Assert.That(cellList, Does.Contain(contentValue), $"The header '{contentValue}' was not found in the table headers.");
+    }
+
     public async Task VerifyTableCellContent(string headerName, string cellValue)
     {
         var table = page.Locator(".ReactTable");
@@ -68,6 +77,8 @@ internal class WebTablesPage(IPage page)
         }
         Assert.That(isCellContentPresent, Is.True, $"The cell value '{cellValue}' is not present under the header '{headerName}'.");
     }
+
+
 
     #region PopUp
     //public async Task VerifyPopupVisible()

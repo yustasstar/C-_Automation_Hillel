@@ -1,6 +1,7 @@
 ﻿using Atata;
 using Microsoft.Playwright;
 using PlaywrigthUITests.PageObjects;
+using System.Buffers;
 
 namespace PlaywrigthUITests.Tests
 {
@@ -10,7 +11,6 @@ namespace PlaywrigthUITests.Tests
         private WebTablesPage _WebTablesPage;
 
         #region TEST DATA:
-        //Page:
         private readonly string testPageUrl = "https://demoqa.com/webtables";
         #endregion
 
@@ -48,8 +48,19 @@ namespace PlaywrigthUITests.Tests
             await _WebTablesPage.VerifyTableCellContent(headerName, cellValue);
         }
 
-        //public void VerifySearch()
-        //public void VerifyTableRow()
+        [Test, Retry(2), Description("Verifing cell value {cellValue} is present under the header {headerName}")]
+        public async Task VerifySearch()
+        {
+            var searchValue = "kierra@example.com";
+            var searchInput = page.GetByPlaceholder("Type to search");
+
+            await _WebTablesPage.GoToURL(testPageUrl);
+            await searchInput.ClickAsync();
+            await searchInput.FillAsync(searchValue);
+            await searchInput.PressAsync("Enter");
+            await _WebTablesPage.VerifyFirstRowCellContent(searchValue);
+        }
+
         //public void VerifyAddNewRow()
         //public void VerifyAddPopupRequiredFields()
         //public void VerifyEditRow()
