@@ -34,20 +34,27 @@ internal class WebTablesPage(IPage page)
     {
         var headers = await page.Locator(".rt-th").AllInnerTextsAsync();
         var headerList = headers.ToList();
-
         Assert.That(headerList, Does.Contain(headerName), $"The header '{headerName}' was not found in the table headers.");
     }
 
-    public async Task VerifyFirstRowCellContent(string contentValue)
+    public async Task FillSearchValue(string searchValue)
+    {
+        var searchInput = page.GetByPlaceholder("Type to search");
+
+        await searchInput.ClickAsync();
+        await searchInput.FillAsync(searchValue);
+        await searchInput.PressAsync("Enter");
+    }
+
+    public async Task VerifyFirstRowContent(string contentValue)
     {
         var row = page.Locator(".rt-tr-group").First;
         var cells = await row.Locator(".rt-td").AllInnerTextsAsync();
         var cellList = cells.ToList();
-
         Assert.That(cellList, Does.Contain(contentValue), $"The search value '{contentValue}' was not found in the table.");
     }
 
-    public async Task VerifyTableCellContent(string headerName, string cellValue)
+    public async Task VerifyTableContent(string headerName, string cellValue)
     {
         var table = page.Locator(".ReactTable");
         var headers = await table.Locator(".rt-th").AllInnerTextsAsync();
@@ -77,22 +84,4 @@ internal class WebTablesPage(IPage page)
         }
         Assert.That(isCellContentPresent, Is.True, $"The cell value '{cellValue}' is not present under the header '{headerName}'.");
     }
-
-
-
-    #region PopUp
-    //public async Task VerifyPopupVisible()
-    //{
-    //    var popup = page.Locator(".modal-content");
-    //    await Assertions.Expect(popup).ToBeVisibleAsync();
-    //}
-
-    //public async Task VerifyFirstNameVisible()
-    //{
-    //    var popup = page.Locator(".modal-content");
-    //    var firstName = popup.GetByPlaceholder("First Name");
-    //    await Assertions.Expect(firstName).ToBeVisibleAsync();
-    //}
-    #endregion
-
 }
