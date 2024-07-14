@@ -1,9 +1,10 @@
-﻿using Microsoft.Playwright;
+﻿using Atata;
+using Microsoft.Playwright;
 using PlaywrigthUITests.PageObjects;
 
 namespace PlaywrigthUITests.Tests
 {
-    //[Category("DynamicPropertiesTests")]
+    //[Category("WebTables")]
     internal class WebTableTests : UITestFixture
     {
         private WebTablesPage _WebTablesPage;
@@ -11,51 +12,39 @@ namespace PlaywrigthUITests.Tests
         #region TEST DATA:
         //Page:
         private readonly string testPageUrl = "https://demoqa.com/webtables";
-        private readonly string testPageH1 = "Web Tables";
-        //Labels:
-        //Inputs:
         #endregion
 
         [SetUp]
-        public void SetupDemoQAPage()
-        {
-            _WebTablesPage = new WebTablesPage(page);
-        }
+        public void SetupDemoQAPage() => _WebTablesPage = new WebTablesPage(page);
 
         [Test, Retry(2)]
         [Description("H1 'Web Tables' should be visible")]
-        public async Task VerifyTextBoxPageH1()
+        public async Task VerifyWebTablePage()
         {
             await _WebTablesPage.GoToURL(testPageUrl);
-            await _WebTablesPage.IsPageH1Visible(testPageH1);
+            await _WebTablesPage.IsPageH1Visible("Web Tables");
+            await _WebTablesPage.IsTableVisible();
         }
 
-        [Test]
-        public async Task VerifyTableVisible()
+        [Test, Retry(2), Description("Verifing cell value {cellValue} is present under the header {headerName}")]
+        public async Task VerifyTableRow()
         {
+            string headerName = "Email";
+            string cellValue = "alden@example.com";
+
             await _WebTablesPage.GoToURL(testPageUrl);
-            //await WebTablesPage.VerifyTableRowContent();
-            await _WebTablesPage.VerifyTableRowContent("Last Name", "Vega");
-            await page.GetByRole(AriaRole.Button, new() { Name = "Add" }).ClickAsync();
-            await _WebTablesPage.VerifyPopupVisible();
-            await _WebTablesPage.VerifyFirstNameVisible();
+            await _WebTablesPage.IsTableVisible();
+            await _WebTablesPage.IsTableRowVisible();
+            await _WebTablesPage.VerifyTableCellContent(headerName, cellValue);
         }
 
-        [Test]
-        public async Task VerifyTableVisible2()
-        {
-            await _WebTablesPage.GoToURL(testPageUrl);
-            await _WebTablesPage.VerifyTableRowContent("Last Name", "Cantrell");
+        //public void VerifyTableHeaders()
+        //public void VerifySearch()
+        //public void VerifyTableRow()
+        //public void VerifyAddNewRow()
+        //public void VerifyAddPopupRequiredFields()
+        //public void VerifyEditRow()
+        //public void VerifyDeleteRow()
 
-            await page.GetByRole(AriaRole.Button, new() { Name = "Add" }).ClickAsync();
-            await _WebTablesPage.VerifyPopupVisible();
-            await _WebTablesPage.VerifyFirstNameVisible();
-        }
-
-        //TODO: automate test cases
-        //Check any mandatory field
-        //Add new row and verify row added
-        //Edit row and verify row edited
-        //Delete row and verify row deleted
     }
 }

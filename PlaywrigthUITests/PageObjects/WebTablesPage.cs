@@ -10,101 +10,69 @@ internal class WebTablesPage(IPage page)
 {
     private readonly IPage page = page;
 
-    #region Page
-    public async Task GoToURL(string testPageUrl)
-    {
-        await page.GotoAsync(testPageUrl);
-        //await page.WaitForURLAsync(testPageUrl);
-    }
+    public async Task GoToURL(string testPageUrl) => await page.GotoAsync(testPageUrl);
 
     public async Task IsPageH1Visible(string pageH1)
     {
         await Assertions.Expect(page.GetByRole(AriaRole.Heading, new() { Name = pageH1 })).ToBeVisibleAsync();
     }
-    #endregion
 
-    #region Table
-    public async Task VerifyTableVisible()
+    public async Task IsTableVisible()
     {
-        var table = page.Locator(".ReactTable");
-        await Assertions.Expect(table).ToBeVisibleAsync();
+        await Assertions.Expect(page.Locator(".ReactTable")).ToBeVisibleAsync();
     }
 
-    public async Task VerifyTableRowVisible()
+    public async Task IsTableRowVisible()
     {
-        var table = page.Locator(".ReactTable");
-        var rows = await table.Locator(".rt-tr-group").AllAsync();
-
-        if (rows.Any())
-        {
-            await Assertions.Expect(rows.First()).ToBeVisibleAsync();
-        }
-        else
-        {
-            Assert.Fail("No rows found in the table.");
-        }
+        await Assertions.Expect(page.Locator(".rt-tr-group").First).ToBeVisibleAsync();
     }
 
-    public async Task VerifyTableRowContent(string headerName = "First Name", string value = "Cierra")
+    public async Task VerifyTableCellContent(string headerName, string cellValue)
     {
         var table = page.Locator(".ReactTable");
 
-        // Locate headers
         var headers = await table.Locator(".rt-th").AllInnerTextsAsync();
-        var headersList = headers.ToList();
-
-        // Find the index of the specified header
-        int headerIndex = headersList.IndexOf(headerName);
-
+        var headerList = headers.ToList();
+        int headerIndex = headerList.IndexOf(headerName);
+        
         if (headerIndex == -1)
         {
-            Assert.Fail($"Header '{headerName}' not found.");
+            throw new Exception($"Header '{headerName}' not found.");
         }
 
-        // Locate all rows
-        var rows = await table.Locator(".rt-tr-group").AllAsync();
+        var rows = table.Locator(".rt-tr-group");
+        var rowCount = await rows.CountAsync();
 
-        // Locate the cells in the specified column for each row
-        var cells = new List<ILocator>();
-        foreach (var row in rows)
+        bool isCellContentPresent = false;
+        for (int i = 0; i < rowCount; i++)
         {
-            var rowCells = await row.Locator(".rt-td").AllAsync();
-            if (rowCells.Count > headerIndex)
+            var row = rows.Nth(i);
+            var cells = await row.Locator(".rt-td").AllInnerTextsAsync();
+            var cellList = cells.ToList();
+
+            if (headerIndex < cellList.Count && cellList[headerIndex] == cellValue)
             {
-                cells.Add(rowCells[headerIndex]);
-            }
-            else
-            {
-                Assert.Fail("Row does not contain enough cells.");
+                isCellContentPresent = true;
+                break;
             }
         }
 
-        // Check if the content of the first cell in the specified column matches the given value
-        if (cells.Any())
-        {
-            var cellContent = await cells.First().InnerTextAsync();
-            Assert.That(cellContent == value, $"The content of the first cell in the '{headerName}' column does not match '{value}'.");
-        }
-        else
-        {
-            Assert.Fail($"No cells found in the '{headerName}' column.");
-        }
+        Assert.That(isCellContentPresent, Is.True, $"The cell value '{cellValue}' is not present under the header '{headerName}'.");
     }
-    #endregion
 
     #region PopUp
-    public async Task VerifyPopupVisible()
-    {
-        var popup = page.Locator(".modal-content");
-        await Assertions.Expect(popup).ToBeVisibleAsync();
-    }
+    //public async Task VerifyPopupVisible()
+    //{
+    //    var popup = page.Locator(".modal-content");
+    //    await Assertions.Expect(popup).ToBeVisibleAsync();
+    //}
 
-    public async Task VerifyFirstNameVisible()
-    {
-        var popup = page.Locator(".modal-content");
-        var firstName = popup.GetByPlaceholder("First Name");
-        await Assertions.Expect(firstName).ToBeVisibleAsync();
-    }
+    //public async Task VerifyFirstNameVisible()
+    //{
+    //    var popup = page.Locator(".modal-content");
+    //    var firstName = popup.GetByPlaceholder("First Name");
+    //    await Assertions.Expect(firstName).ToBeVisibleAsync();
+    //}
     #endregion
 
 }
