@@ -51,7 +51,7 @@ namespace PlaywrigthUITests.Tests
         [Test, Retry(2), Description("Verifing cell value {cellValue} is present under the header {headerName}")]
         public async Task VerifySearch()
         {
-            var searchValue = "kierra@example.com";
+            var searchValue = "alden@example.com";
             var searchInput = page.GetByPlaceholder("Type to search");
 
             await _WebTablesPage.GoToURL(testPageUrl);

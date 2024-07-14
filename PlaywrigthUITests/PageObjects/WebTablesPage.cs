@@ -44,7 +44,7 @@ internal class WebTablesPage(IPage page)
         var cells = await row.Locator(".rt-td").AllInnerTextsAsync();
         var cellList = cells.ToList();
 
-        Assert.That(cellList, Does.Contain(contentValue), $"The header '{contentValue}' was not found in the table headers.");
+        Assert.That(cellList, Does.Contain(contentValue), $"The search value '{contentValue}' was not found in the table.");
     }
 
     public async Task VerifyTableCellContent(string headerName, string cellValue)
