@@ -18,12 +18,22 @@ namespace PlaywrigthUITests.Tests
         public void SetupDemoQAPage() => _WebTablesPage = new WebTablesPage(page);
 
         [Test, Retry(2)]
-        [Description("H1 'Web Tables' should be visible")]
+        [Description("'Web Tables' H1 and table should be visible")]
         public async Task VerifyWebTablePage()
         {
             await _WebTablesPage.GoToURL(testPageUrl);
             await _WebTablesPage.IsPageH1Visible("Web Tables");
             await _WebTablesPage.IsTableVisible();
+        }
+
+        [Test, Retry(2), Description("Verifing header value {headerName} is present in the table}")]
+        public async Task VerifyTableHeaders()
+        {
+            string headerName = "Action";
+
+            await _WebTablesPage.GoToURL(testPageUrl);
+            await _WebTablesPage.IsTableVisible();
+            await _WebTablesPage.VerifyTableHeadersContent(headerName);
         }
 
         [Test, Retry(2), Description("Verifing cell value {cellValue} is present under the header {headerName}")]
@@ -38,7 +48,6 @@ namespace PlaywrigthUITests.Tests
             await _WebTablesPage.VerifyTableCellContent(headerName, cellValue);
         }
 
-        //public void VerifyTableHeaders()
         //public void VerifySearch()
         //public void VerifyTableRow()
         //public void VerifyAddNewRow()

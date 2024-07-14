@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
+using Atata;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 using OpenQA.Selenium.DevTools.V122.Tracing;
+using TechTalk.SpecFlow;
 
 internal class WebTablesPage(IPage page)
 {
@@ -27,14 +30,21 @@ internal class WebTablesPage(IPage page)
         await Assertions.Expect(page.Locator(".rt-tr-group").First).ToBeVisibleAsync();
     }
 
+    public async Task VerifyTableHeadersContent(string headerName)
+    {
+        var headers = await page.Locator(".rt-th").AllInnerTextsAsync();
+        var headerList = headers.ToList();
+
+        Assert.That(headerList, Does.Contain(headerName), $"The header '{headerName}' was not found in the table headers.");
+    }
+
     public async Task VerifyTableCellContent(string headerName, string cellValue)
     {
         var table = page.Locator(".ReactTable");
-
         var headers = await table.Locator(".rt-th").AllInnerTextsAsync();
         var headerList = headers.ToList();
         int headerIndex = headerList.IndexOf(headerName);
-        
+
         if (headerIndex == -1)
         {
             throw new Exception($"Header '{headerName}' not found.");
@@ -56,7 +66,6 @@ internal class WebTablesPage(IPage page)
                 break;
             }
         }
-
         Assert.That(isCellContentPresent, Is.True, $"The cell value '{cellValue}' is not present under the header '{headerName}'.");
     }
 
