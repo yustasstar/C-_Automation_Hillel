@@ -1,6 +1,5 @@
 ﻿using Microsoft.Playwright;
 
-
 internal class WebTablesPage(IPage page)
 {
     private readonly IPage page = page;
