@@ -4,27 +4,34 @@
 internal class WebTablesPage(IPage page)
 {
     private readonly IPage page = page;
+    private readonly string testPageUrl = "https://demoqa.com/webtables";
+    //locators:
+    private readonly string tableLocator = ".ReactTable";
+    private readonly string rowLocator = ".rt-tr-group";
+    private readonly string headerLocator = ".rt-th";
+    private readonly string cellLocator = ".rt-td";
+    private readonly string addPopUpLocator = ".modal-content";
 
-    public async Task GoToURL(string testPageUrl) => await page.GotoAsync(testPageUrl);
+    public async Task GoToTestPageURL() => await page.GotoAsync(testPageUrl);
 
     public async Task IsPageH1Visible(string pageH1)
     {
         await Assertions.Expect(page.GetByRole(AriaRole.Heading, new() { Name = pageH1 })).ToBeVisibleAsync();
     }
 
-    public async Task IsTableVisible(string tableLocator)
+    public async Task IsTableVisible()
     {
         await Assertions.Expect(page.Locator(tableLocator)).ToBeVisibleAsync();
     }
 
-    public async Task IsTableRowVisible(string rowLocator)
+    public async Task IsTableRowVisible()
     {
         await Assertions.Expect(page.Locator(rowLocator).First).ToBeVisibleAsync();
     }
 
     public async Task VerifyTableHeadersContent(string headerName)
     {
-        var headers = await page.Locator(".rt-th").AllInnerTextsAsync();
+        var headers = await page.Locator(headerLocator).AllInnerTextsAsync();
         var headerList = headers.ToList();
         Assert.That(headerList, Does.Contain(headerName), $"The header '{headerName}' was not found in the table headers.");
     }
@@ -39,26 +46,26 @@ internal class WebTablesPage(IPage page)
         //await searchInput.PressAsync("Enter");
     }
 
-    public async Task VerifyFirstRowContentIsPresent(string rowLocator, string contentValue)
+    public async Task VerifyFirstRowContentIsPresent(string contentValue)
     {
         var row = page.Locator(rowLocator).First;
-        var cells = await row.Locator(".rt-td").AllInnerTextsAsync();
+        var cells = await row.Locator(cellLocator).AllInnerTextsAsync();
         var cellList = cells.ToList();
         Assert.That(cellList, Does.Contain(contentValue), $"The search value '{contentValue}' was not found in the table.");
     }
 
-    public async Task VerifyFirstRowContentIsNotPresent(string rowLocator, string contentValue)
+    public async Task VerifyFirstRowContentIsNotPresent(string contentValue)
     {
         var row = page.Locator(rowLocator).First;
-        var cells = await row.Locator(".rt-td").AllInnerTextsAsync();
+        var cells = await row.Locator(cellLocator).AllInnerTextsAsync();
         var cellList = cells.ToList();
         Assert.That(cellList, Does.Not.Contain(contentValue), $"The search value '{contentValue}' was not found in the table.");
     }
 
-    public async Task VerifyTableContent(string tableLocator, string rowLocator, string headerName, string cellValue)
+    public async Task VerifyTableContent(string headerName, string cellValue)
     {
         var table = page.Locator(tableLocator);
-        var headers = await table.Locator(".rt-th").AllInnerTextsAsync();
+        var headers = await table.Locator(headerLocator).AllInnerTextsAsync();
         var headerList = headers.ToList();
         int headerIndex = headerList.IndexOf(headerName);
 
@@ -74,7 +81,7 @@ internal class WebTablesPage(IPage page)
         for (int i = 0; i < rowCount; i++)
         {
             var row = rows.Nth(i);
-            var cells = await row.Locator(".rt-td").AllInnerTextsAsync();
+            var cells = await row.Locator(cellLocator).AllInnerTextsAsync();
             var cellList = cells.ToList();
 
             if (headerIndex < cellList.Count && cellList[headerIndex] == cellValue)
@@ -91,9 +98,9 @@ internal class WebTablesPage(IPage page)
         await page.GetByRole(AriaRole.Button, new() { Name = buttonName }).ClickAsync();
     }
 
-    public async Task VerifyAddPopupOpened(string popupLocator)
+    public async Task VerifyAddPopupOpened()
     {
-        await Assertions.Expect(page.Locator(popupLocator)).ToBeVisibleAsync();
+        await Assertions.Expect(page.Locator(addPopUpLocator)).ToBeVisibleAsync();
     }
 
     public async Task InputFill(string placeholder, string fillText)

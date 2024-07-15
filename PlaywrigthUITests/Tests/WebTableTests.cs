@@ -11,31 +11,23 @@ namespace PlaywrigthUITests.Tests
         public void SetupDemoQAPage() => _WebTablesPage = new WebTablesPage(page);
 
         #region TEST DATA:
-        private readonly string testPageUrl = "https://demoqa.com/webtables";
-
         //input placeholders:
         private readonly string searchPlaceholder = "Type to search";
-
         private readonly string firstNamePlaceholder = "First Name";
         private readonly string lastNamePlaceholder = "Last Name";
         private readonly string emailPlaceholder = "name@example.com";
         private readonly string agePlaceholder = "Age";
         private readonly string salaryPlaceholder = "Salary";
         private readonly string departmentPlaceholder = "Department";
-        //locators:
-        private readonly string tableLocator = ".ReactTable";
-        private readonly string addPopUpLocator = ".modal-content";
-        private readonly string rowLocator = ".rt-tr-group";
-        
         #endregion
 
         [Test, Retry(2)]
         [Description("'Web Tables' H1 and table should be visible")]
         public async Task VerifyWebTablePage()
         {
-            await _WebTablesPage.GoToURL(testPageUrl);
+            await _WebTablesPage.GoToTestPageURL();
             await _WebTablesPage.IsPageH1Visible("Web Tables");
-            await _WebTablesPage.IsTableVisible(tableLocator);
+            await _WebTablesPage.IsTableVisible();
         }
 
         [Test, Retry(2), Description("Verifing header value {headerName} is present in the table}")]
@@ -43,8 +35,8 @@ namespace PlaywrigthUITests.Tests
         {
             string headerName = "Action";
 
-            await _WebTablesPage.GoToURL(testPageUrl);
-            await _WebTablesPage.IsTableVisible(tableLocator);
+            await _WebTablesPage.GoToTestPageURL();
+            await _WebTablesPage.IsTableVisible();
             await _WebTablesPage.VerifyTableHeadersContent(headerName);
         }
 
@@ -53,9 +45,9 @@ namespace PlaywrigthUITests.Tests
         {
             var searchValue = "alden@example.com";
 
-            await _WebTablesPage.GoToURL(testPageUrl);
+            await _WebTablesPage.GoToTestPageURL();
             await _WebTablesPage.FillSearchValue(searchPlaceholder, searchValue);
-            await _WebTablesPage.VerifyFirstRowContentIsPresent(rowLocator, searchValue);
+            await _WebTablesPage.VerifyFirstRowContentIsPresent(searchValue);
         }
 
         [Test, Retry(2), Description("Verifing cell value {cellValue} is present under the header {headerName}")]
@@ -64,10 +56,10 @@ namespace PlaywrigthUITests.Tests
             string headerName = "Email";
             string cellValue = "alden@example.com";
 
-            await _WebTablesPage.GoToURL(testPageUrl);
-            await _WebTablesPage.IsTableVisible(tableLocator);
-            await _WebTablesPage.IsTableRowVisible(rowLocator);
-            await _WebTablesPage.VerifyTableContent(tableLocator, rowLocator, headerName, cellValue);
+            await _WebTablesPage.GoToTestPageURL();
+            await _WebTablesPage.IsTableVisible();
+            await _WebTablesPage.IsTableRowVisible();
+            await _WebTablesPage.VerifyTableContent(headerName, cellValue);
         }
 
         [Test, Retry(2), Description("Add new row and verify is it present in the table")]
@@ -81,9 +73,9 @@ namespace PlaywrigthUITests.Tests
             string salary = "7890";
             string department = "testDep";
             //-------------------------------
-            await _WebTablesPage.GoToURL(testPageUrl);
+            await _WebTablesPage.GoToTestPageURL();
             await _WebTablesPage.ButtonCLick("Add");
-            await _WebTablesPage.VerifyAddPopupOpened(addPopUpLocator);
+            await _WebTablesPage.VerifyAddPopupOpened();
             await _WebTablesPage.InputFill(firstNamePlaceholder, firstName);
             await _WebTablesPage.InputFill(lastNamePlaceholder, lastName);
             await _WebTablesPage.InputFill(emailPlaceholder, email);
@@ -92,7 +84,7 @@ namespace PlaywrigthUITests.Tests
             await _WebTablesPage.InputFill(departmentPlaceholder, department);
             await _WebTablesPage.ButtonCLick("Submit");
             await _WebTablesPage.FillSearchValue(searchPlaceholder, email);
-            await _WebTablesPage.VerifyFirstRowContentIsPresent(rowLocator, lastName);
+            await _WebTablesPage.VerifyFirstRowContentIsPresent(lastName);
         }
 
         [Test, Retry(2), Description("Verify highlighted required fields")]
@@ -111,9 +103,9 @@ namespace PlaywrigthUITests.Tests
             string failColor = "rgb(220, 53, 69)";
             #endregion
 
-            await _WebTablesPage.GoToURL(testPageUrl);
+            await _WebTablesPage.GoToTestPageURL();
             await _WebTablesPage.ButtonCLick("Add");
-            await _WebTablesPage.VerifyAddPopupOpened(addPopUpLocator);
+            await _WebTablesPage.VerifyAddPopupOpened();
             await _WebTablesPage.ButtonCLick("Submit");
 
             await _WebTablesPage.VerifyInputCssOption(firstNamePlaceholder, cssOption, failColor);
@@ -146,15 +138,15 @@ namespace PlaywrigthUITests.Tests
             string searchValue = "newM";
             string editButtonID = "#edit-record-2";
 
-            await _WebTablesPage.GoToURL(testPageUrl);
+            await _WebTablesPage.GoToTestPageURL();
             await _WebTablesPage.ClickEdit(editButtonID);
-            await _WebTablesPage.VerifyAddPopupOpened(addPopUpLocator);
+            await _WebTablesPage.VerifyAddPopupOpened();
             await _WebTablesPage.InputFill(emailPlaceholder, newEmail);
             await _WebTablesPage.InputFill(agePlaceholder, newAge);
             await _WebTablesPage.ButtonCLick("Submit");
             await _WebTablesPage.FillSearchValue(searchPlaceholder, searchValue);
-            await _WebTablesPage.VerifyFirstRowContentIsPresent(rowLocator, newEmail);
-            await _WebTablesPage.VerifyFirstRowContentIsPresent(rowLocator, newAge);
+            await _WebTablesPage.VerifyFirstRowContentIsPresent(newEmail);
+            await _WebTablesPage.VerifyFirstRowContentIsPresent(newAge);
         }
 
         [Test, Retry(2), Description("Verify row is Deleted from the table")]
@@ -163,10 +155,10 @@ namespace PlaywrigthUITests.Tests
             string searchValue = "alden@example.com";
             string editButtonID = "#delete-record-2";
 
-            await _WebTablesPage.GoToURL(testPageUrl);
+            await _WebTablesPage.GoToTestPageURL();
             await _WebTablesPage.ClickEdit(editButtonID);
             await _WebTablesPage.FillSearchValue(searchPlaceholder, searchValue);
-            await _WebTablesPage.VerifyFirstRowContentIsNotPresent(rowLocator, searchValue);
+            await _WebTablesPage.VerifyFirstRowContentIsNotPresent(searchValue);
         }
     }
 }
