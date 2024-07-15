@@ -1,5 +1,4 @@
-﻿using Atata;
-using Microsoft.Playwright;
+﻿using Microsoft.Playwright;
 using PlaywrigthUITests.Infrastructure;
 using System;
 using System.Collections.Generic;

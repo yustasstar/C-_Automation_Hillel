@@ -1,5 +1,4 @@
-﻿using Atata;
-using NUnit.Framework.Internal;
+﻿using NUnit.Framework.Internal;
 using PlaywrigthUITests.PageObjects;
 using System;
 using System.Collections.Generic;

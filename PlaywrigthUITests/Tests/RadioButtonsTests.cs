@@ -1,5 +1,4 @@
-﻿using Atata;
-using PlaywrigthUITests.PageObjects;
+﻿using PlaywrigthUITests.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
