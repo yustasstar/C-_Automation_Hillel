@@ -43,7 +43,8 @@ internal class WebTablesPage(IPage page)
 
         await searchInput.ClickAsync();
         await searchInput.FillAsync(searchValue);
-        await searchInput.PressAsync("Enter");
+        await searchInput.FocusAsync();
+        //await searchInput.PressAsync("Enter");
     }
 
     public async Task VerifyFirstRowContent(string contentValue)
