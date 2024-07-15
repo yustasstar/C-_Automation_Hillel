@@ -1,5 +1,6 @@
 ﻿using Microsoft.Playwright;
 using NUnit.Framework;
+using PlaywrigthUITests.PageObjects;
 using System.Threading.Tasks;
 
 namespace PlaywrigthUITests.Tests
