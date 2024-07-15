@@ -61,7 +61,7 @@ namespace PlaywrigthUITests.Tests
             await _WebTablesPage.VerifyTableContent(headerName, cellValue);
         }
 
-        [Test, Retry(2), Description("Add new row and verify is it in the table")]
+        [Test, Retry(2), Description("Add new row and verify is it present in the table")]
         public async Task VerifyAddNewRow()
         {
             //testData:
@@ -143,7 +143,7 @@ namespace PlaywrigthUITests.Tests
             await _WebTablesPage.VerifyFirstRowContentIsPresent(newAge);
         }
 
-        [Test, Retry(2), Description("Verify highlighted required fields")]
+        [Test, Retry(2), Description("Verify roe is Deleted from the table")]
         public async Task VerifyDeleteRow()
         {
             string searchValue = "alden@example.com";
