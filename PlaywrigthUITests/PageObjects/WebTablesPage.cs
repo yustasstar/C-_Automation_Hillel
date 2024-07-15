@@ -1,4 +1,6 @@
 ﻿using Microsoft.Playwright;
+using NUnit.Framework;
+using System.Threading.Tasks;
 
 internal class WebTablesPage(IPage page)
 {
@@ -22,7 +24,12 @@ internal class WebTablesPage(IPage page)
     private readonly string departmentPlaceholder = "Department";
     #endregion
 
-    public async Task GoToTestPageURL() => await page.GotoAsync(testPageUrl);
+    public async Task GoToTestPageURL()
+    {
+        await page.GotoAsync(testPageUrl);
+        await page.WaitForURLAsync(testPageUrl);
+    }
+
     public async Task IsPageH1Visible(string pageH1)
     {
         await Assertions.Expect(page.GetByRole(AriaRole.Heading, new() { Name = pageH1 })).ToBeVisibleAsync();
