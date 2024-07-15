@@ -13,12 +13,12 @@ namespace PlaywrigthUITests.Tests
     {
         private WebTablesPage _WebTablesPage;
 
+        [SetUp]
+        public void SetupDemoQAPage() => _WebTablesPage = new WebTablesPage(page);
+
         #region TEST DATA:
         private readonly string testPageUrl = "https://demoqa.com/webtables";
         #endregion
-
-        [SetUp]
-        public void SetupDemoQAPage() => _WebTablesPage = new WebTablesPage(page);
 
         [Test, Retry(2)]
         [Description("'Web Tables' H1 and table should be visible")]
@@ -46,7 +46,7 @@ namespace PlaywrigthUITests.Tests
 
             await _WebTablesPage.GoToURL(testPageUrl);
             await _WebTablesPage.FillSearchValue(searchValue);
-            await _WebTablesPage.VerifyFirstRowContent(searchValue);
+            await _WebTablesPage.VerifyFirstRowContentIsPresent(searchValue);
         }
 
         [Test, Retry(2), Description("Verifing cell value {cellValue} is present under the header {headerName}")]
@@ -83,7 +83,7 @@ namespace PlaywrigthUITests.Tests
             await page.GetByPlaceholder("Department").FillAsync(department);
             await page.GetByRole(AriaRole.Button, new() { Name = "Submit" }).ClickAsync();
             await _WebTablesPage.FillSearchValue(email);
-            await _WebTablesPage.VerifyFirstRowContent(lastName);
+            await _WebTablesPage.VerifyFirstRowContentIsPresent(lastName);
         }
 
         [Test, Retry(2), Description("Verify highlighted required fields")]
@@ -126,11 +126,32 @@ namespace PlaywrigthUITests.Tests
             await Assertions.Expect(page.GetByPlaceholder("Department")).ToHaveCSSAsync(cssOption, passColor);
         }
 
-        [Test, Retry(2), Description("Verify highlighted required fields")]
+        [Test, Retry(2), Description("Verify row editing")]
         public async Task VerifyEditRow()
         {
+            string newEmail = "newMail@email.com";
+            string newAge = "37";
+            string searchValue = "newM";
 
+            await _WebTablesPage.GoToURL(testPageUrl);
+            await page.Locator("#edit-record-2").GetByRole(AriaRole.Img).ClickAsync();
+            await page.GetByPlaceholder("name@example.com").FillAsync(newEmail);
+            await page.GetByPlaceholder("Age").FillAsync(newAge);
+            await page.GetByRole(AriaRole.Button, new() { Name = "Submit" }).ClickAsync();
+            await _WebTablesPage.FillSearchValue(searchValue);
+            await _WebTablesPage.VerifyFirstRowContentIsPresent(newEmail);
+            await _WebTablesPage.VerifyFirstRowContentIsPresent(newAge);
         }
-        //public void VerifyDeleteRow()
+
+        [Test, Retry(2), Description("Verify highlighted required fields")]
+        public async Task VerifyDeleteRow()
+        {
+            string searchValue = "alden@example.com";
+
+            await _WebTablesPage.GoToURL(testPageUrl);
+            await page.Locator("#delete-record-2").GetByRole(AriaRole.Img).ClickAsync();
+            await _WebTablesPage.FillSearchValue(searchValue);
+            await _WebTablesPage.VerifyFirstRowContentIsNotPresent(searchValue);
+        }
     }
 }

@@ -47,12 +47,20 @@ internal class WebTablesPage(IPage page)
         //await searchInput.PressAsync("Enter");
     }
 
-    public async Task VerifyFirstRowContent(string contentValue)
+    public async Task VerifyFirstRowContentIsPresent(string contentValue)
     {
         var row = page.Locator(".rt-tr-group").First;
         var cells = await row.Locator(".rt-td").AllInnerTextsAsync();
         var cellList = cells.ToList();
         Assert.That(cellList, Does.Contain(contentValue), $"The search value '{contentValue}' was not found in the table.");
+    }
+
+    public async Task VerifyFirstRowContentIsNotPresent(string contentValue)
+    {
+        var row = page.Locator(".rt-tr-group").First;
+        var cells = await row.Locator(".rt-td").AllInnerTextsAsync();
+        var cellList = cells.ToList();
+        Assert.That(cellList, Does.Not.Contain(contentValue), $"The search value '{contentValue}' was not found in the table.");
     }
 
     public async Task VerifyTableContent(string headerName, string cellValue)
