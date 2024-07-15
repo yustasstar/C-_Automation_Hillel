@@ -2,7 +2,6 @@
 
 namespace PlaywrigthUITests.Tests
 {
-    //[Category("WebTables")]
     internal class WebTableTests : UITestFixture
     {
         private WebTablesPage _WebTablesPage;
@@ -10,23 +9,14 @@ namespace PlaywrigthUITests.Tests
         [SetUp]
         public void SetupDemoQAPage() => _WebTablesPage = new WebTablesPage(page);
 
-        #region TEST DATA:
-        //input placeholders:
-        private readonly string searchPlaceholder = "Type to search";
-        private readonly string firstNamePlaceholder = "First Name";
-        private readonly string lastNamePlaceholder = "Last Name";
-        private readonly string emailPlaceholder = "name@example.com";
-        private readonly string agePlaceholder = "Age";
-        private readonly string salaryPlaceholder = "Salary";
-        private readonly string departmentPlaceholder = "Department";
-        #endregion
-
         [Test, Retry(2)]
         [Description("'Web Tables' H1 and table should be visible")]
         public async Task VerifyWebTablePage()
         {
+            string pageH1Value = "Web Tables";
+
             await _WebTablesPage.GoToTestPageURL();
-            await _WebTablesPage.IsPageH1Visible("Web Tables");
+            await _WebTablesPage.IsPageH1Visible(pageH1Value);
             await _WebTablesPage.IsTableVisible();
         }
 
@@ -46,7 +36,7 @@ namespace PlaywrigthUITests.Tests
             var searchValue = "alden@example.com";
 
             await _WebTablesPage.GoToTestPageURL();
-            await _WebTablesPage.FillSearchValue(searchPlaceholder, searchValue);
+            await _WebTablesPage.FillSearchValue(searchValue);
             await _WebTablesPage.VerifyFirstRowContentIsPresent(searchValue);
         }
 
@@ -74,16 +64,16 @@ namespace PlaywrigthUITests.Tests
             string department = "testDep";
             //-------------------------------
             await _WebTablesPage.GoToTestPageURL();
-            await _WebTablesPage.ButtonCLick("Add");
+            await _WebTablesPage.AddButtonClick();
             await _WebTablesPage.VerifyAddPopupOpened();
-            await _WebTablesPage.InputFill(firstNamePlaceholder, firstName);
-            await _WebTablesPage.InputFill(lastNamePlaceholder, lastName);
-            await _WebTablesPage.InputFill(emailPlaceholder, email);
-            await _WebTablesPage.InputFill(agePlaceholder, age);
-            await _WebTablesPage.InputFill(salaryPlaceholder, salary);
-            await _WebTablesPage.InputFill(departmentPlaceholder, department);
-            await _WebTablesPage.ButtonCLick("Submit");
-            await _WebTablesPage.FillSearchValue(searchPlaceholder, email);
+            await _WebTablesPage.FillFirstName(firstName);
+            await _WebTablesPage.FillLastName(lastName);
+            await _WebTablesPage.FillEmail(email);
+            await _WebTablesPage.FillAge(age);
+            await _WebTablesPage.FillSalary(salary);
+            await _WebTablesPage.FillDepartment(department);
+            await _WebTablesPage.SubmitButtonCLick();
+            await _WebTablesPage.FillSearchValue(email);
             await _WebTablesPage.VerifyFirstRowContentIsPresent(lastName);
         }
 
@@ -104,30 +94,31 @@ namespace PlaywrigthUITests.Tests
             #endregion
 
             await _WebTablesPage.GoToTestPageURL();
-            await _WebTablesPage.ButtonCLick("Add");
+            await _WebTablesPage.AddButtonClick();
             await _WebTablesPage.VerifyAddPopupOpened();
-            await _WebTablesPage.ButtonCLick("Submit");
+            await _WebTablesPage.SubmitButtonCLick();
 
-            await _WebTablesPage.VerifyInputCssOption(firstNamePlaceholder, cssOption, failColor);
-            await _WebTablesPage.VerifyInputCssOption(lastNamePlaceholder, cssOption, failColor);
-            await _WebTablesPage.VerifyInputCssOption(emailPlaceholder, cssOption, failColor);
-            await _WebTablesPage.VerifyInputCssOption(agePlaceholder, cssOption, failColor);
-            await _WebTablesPage.VerifyInputCssOption(salaryPlaceholder, cssOption, failColor);
-            await _WebTablesPage.VerifyInputCssOption(departmentPlaceholder, cssOption, failColor);
+            await _WebTablesPage.VerifyFirstNameCssOption(cssOption, failColor);
+            await _WebTablesPage.VerifyLastNameCssOption(cssOption, failColor);
+            await _WebTablesPage.VerifyEmailCssOption(cssOption, failColor);
+            await _WebTablesPage.VerifyAgeCssOption(cssOption, failColor);
+            await _WebTablesPage.VerifySalaryCssOption(cssOption, failColor);
+            await _WebTablesPage.VerifyDepartmentCssOption(cssOption, failColor);
 
-            await _WebTablesPage.InputFill(firstNamePlaceholder, firstName);
-            await _WebTablesPage.InputFill(lastNamePlaceholder, lastName);
-            await _WebTablesPage.InputFill(emailPlaceholder, email);
-            await _WebTablesPage.InputFill(agePlaceholder, age);
-            await _WebTablesPage.InputFill(salaryPlaceholder, salary);
-            await _WebTablesPage.InputFill(departmentPlaceholder, department);
+            await _WebTablesPage.FillFirstName(firstName);
+            await _WebTablesPage.FillLastName(lastName);
+            await _WebTablesPage.FillEmail(email);
+            await _WebTablesPage.FillAge(age);
+            await _WebTablesPage.FillSalary(salary);
+            await _WebTablesPage.FillDepartment(department);
 
-            await _WebTablesPage.VerifyInputCssOption(firstNamePlaceholder, cssOption, passColor);
-            await _WebTablesPage.VerifyInputCssOption(lastNamePlaceholder, cssOption, passColor);
-            await _WebTablesPage.VerifyInputCssOption(emailPlaceholder, cssOption, passColor);
-            await _WebTablesPage.VerifyInputCssOption(agePlaceholder, cssOption, passColor);
-            await _WebTablesPage.VerifyInputCssOption(salaryPlaceholder, cssOption, passColor);
-            await _WebTablesPage.VerifyInputCssOption(departmentPlaceholder, cssOption, passColor);
+            await _WebTablesPage.VerifyFirstNameCssOption(cssOption, passColor);
+            await _WebTablesPage.VerifyLastNameCssOption(cssOption, passColor);
+            await _WebTablesPage.VerifyEmailCssOption(cssOption, passColor);
+            await _WebTablesPage.VerifyAgeCssOption(cssOption, passColor);
+            await _WebTablesPage.VerifySalaryCssOption(cssOption, passColor);
+            await _WebTablesPage.VerifyDepartmentCssOption(cssOption, passColor);
+
         }
 
         [Test, Retry(2), Description("Verify row editing")]
@@ -136,15 +127,14 @@ namespace PlaywrigthUITests.Tests
             string newEmail = "newMail@email.com";
             string newAge = "37";
             string searchValue = "newM";
-            string editButtonID = "#edit-record-2";
 
             await _WebTablesPage.GoToTestPageURL();
-            await _WebTablesPage.ClickEdit(editButtonID);
+            await _WebTablesPage.ClickEdit();
             await _WebTablesPage.VerifyAddPopupOpened();
-            await _WebTablesPage.InputFill(emailPlaceholder, newEmail);
-            await _WebTablesPage.InputFill(agePlaceholder, newAge);
-            await _WebTablesPage.ButtonCLick("Submit");
-            await _WebTablesPage.FillSearchValue(searchPlaceholder, searchValue);
+            await _WebTablesPage.FillEmail(newEmail);
+            await _WebTablesPage.FillAge(newAge);
+            await _WebTablesPage.SubmitButtonCLick();
+            await _WebTablesPage.FillSearchValue(searchValue);
             await _WebTablesPage.VerifyFirstRowContentIsPresent(newEmail);
             await _WebTablesPage.VerifyFirstRowContentIsPresent(newAge);
         }
@@ -153,11 +143,10 @@ namespace PlaywrigthUITests.Tests
         public async Task VerifyDeleteRow()
         {
             string searchValue = "alden@example.com";
-            string editButtonID = "#delete-record-2";
 
             await _WebTablesPage.GoToTestPageURL();
-            await _WebTablesPage.ClickEdit(editButtonID);
-            await _WebTablesPage.FillSearchValue(searchPlaceholder, searchValue);
+            await _WebTablesPage.ClickDelete();
+            await _WebTablesPage.FillSearchValue(searchValue);
             await _WebTablesPage.VerifyFirstRowContentIsNotPresent(searchValue);
         }
     }
