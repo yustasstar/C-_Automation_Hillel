@@ -1,10 +1,4 @@
-﻿using Atata;
-using Microsoft.Playwright;
-using Microsoft.VisualBasic;
-using PlaywrigthUITests.PageObjects;
-using System.Buffers;
-using System.Drawing;
-using System.Xml.Linq;
+﻿using Microsoft.Playwright;
 
 namespace PlaywrigthUITests.Tests
 {

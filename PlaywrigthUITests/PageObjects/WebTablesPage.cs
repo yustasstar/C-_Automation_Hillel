@@ -1,13 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Threading.Tasks;
-using Atata;
-using Microsoft.Playwright;
-using Microsoft.Playwright.NUnit;
-using NUnit.Framework;
-using OpenQA.Selenium.DevTools.V122.Tracing;
-using TechTalk.SpecFlow;
+﻿using Microsoft.Playwright;
+
 
 internal class WebTablesPage(IPage page)
 {
