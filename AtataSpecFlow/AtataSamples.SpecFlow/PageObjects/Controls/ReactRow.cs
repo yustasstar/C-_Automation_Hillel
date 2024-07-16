@@ -7,6 +7,7 @@ namespace AtataSamples.SpecFlow.PageObjects.Controls
     public class ReactRow<TOwner> : TableRow<TOwner>
         where TOwner : PageObject<TOwner>
     {
+        //TODO: change to CSS selector (find by css) from lesson 17
         [FindByXPath("//div[@role='gridcell'][1]")]
         public Text<TOwner> FirstName { get; private set; }
 
