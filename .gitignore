@@ -3,7 +3,4 @@
 .vscode/
 
 bin/
-obj/
-
-AtataSpecFlow/AtataSamples.SpecFlow/
-PlaywrigthSpecFlow/obj/
+obj
