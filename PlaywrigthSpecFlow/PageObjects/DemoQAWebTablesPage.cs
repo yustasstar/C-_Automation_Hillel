@@ -7,105 +7,181 @@ namespace PlaywrightSpecFlow.PageObjects
     internal class DemoQAWebTablesPage
     {
         private readonly IPage page;
-        private readonly string WebTablePageUrl = "https://demoqa.com/webtables";
-
         public DemoQAWebTablesPage(IPage page)
         {
             this.page = page;
         }
 
-        public async Task GoToDemoQaWebTablesPage()
+        #region Test DATA:
+        private readonly string testPageUrl = "https://demoqa.com/webtables";
+        //Locators:
+        private readonly string tableLocator = ".ReactTable";
+        private readonly string rowLocator = ".rt-tr-group";
+        private readonly string headerLocator = ".rt-th";
+        private readonly string cellLocator = ".rt-td";
+        private readonly string searchLocator = "Type to search";
+        private readonly string addPopupLocator = ".modal-content";
+        #endregion
+
+        #region Page
+        public async Task GoToTestPageURL()
         {
-            await page.GotoAsync(WebTablePageUrl);
+            await page.GotoAsync(testPageUrl);
+            await page.WaitForURLAsync(testPageUrl);
         }
 
-        public async Task VerifyTableVisible()
+        public async Task IsPageH1Visible(string pageH1)
         {
-            var table = page.Locator(".ReactTable");
-            await Assertions.Expect(table).ToBeVisibleAsync();
+            await Assertions.Expect(page.GetByRole(AriaRole.Heading, new() { Name = pageH1 })).ToBeVisibleAsync();
         }
+        #endregion
 
-
-        public async Task VerifyTableRowContent(string headerName = "First Name", string value = "Cierra")
+        #region Table:
+        public async Task IsTableVisible()
         {
-            var table = page.Locator(".ReactTable");
-
-            // Locate headers
-            var headers = await table.Locator(".rt-th").AllInnerTextsAsync();
-            var headersList = headers.ToList();
-
-            // Find the index of the specified header
-            int headerIndex = headersList.IndexOf(headerName);
+            await Assertions.Expect(page.Locator(tableLocator)).ToBeVisibleAsync();
+        }
+        public async Task IsTableRowVisible()
+        {
+            await Assertions.Expect(page.Locator(rowLocator).First).ToBeVisibleAsync();
+        }
+        public async Task VerifyTableHeadersContent(string headerName)
+        {
+            var headers = await page.Locator(headerLocator).AllInnerTextsAsync();
+            var headerList = headers.ToList();
+            Assert.That(headerList, Does.Contain(headerName), $"The header '{headerName}' was not found in the table headers.");
+        }
+        public async Task VerifyFirstRowContentIsPresent(string contentValue)
+        {
+            var row = page.Locator(rowLocator).First;
+            var cells = await row.Locator(cellLocator).AllInnerTextsAsync();
+            var cellList = cells.ToList();
+            Assert.That(cellList, Does.Contain(contentValue), $"The search value '{contentValue}' was not found in the table.");
+        }
+        public async Task VerifyFirstRowContentIsNotPresent(string contentValue)
+        {
+            var row = page.Locator(rowLocator).First;
+            var cells = await row.Locator(cellLocator).AllInnerTextsAsync();
+            var cellList = cells.ToList();
+            Assert.That(cellList, Does.Not.Contain(contentValue), $"The search value '{contentValue}' was not found in the table.");
+        }
+        public async Task VerifyTableContent(string headerName, string cellValue)
+        {
+            var table = page.Locator(tableLocator);
+            var headers = await table.Locator(headerLocator).AllInnerTextsAsync();
+            var headerList = headers.ToList();
+            int headerIndex = headerList.IndexOf(headerName);
 
             if (headerIndex == -1)
             {
-                Assert.Fail($"Header '{headerName}' not found.");
+                throw new Exception($"Header '{headerName}' not found.");
             }
 
-            // Locate all rows using EvaluateAllAsync
-            var rows = await table.Locator(".rt-tr-group").EvaluateAllAsync<ILocator[]>("(elements) => elements");
+            var rows = table.Locator(rowLocator);
+            var rowCount = await rows.CountAsync();
 
-            if (rows.Length == 0)
+            bool isCellContentPresent = false;
+            for (int i = 0; i < rowCount; i++)
             {
-                Assert.Fail("No rows found in the table.");
-            }
+                var row = rows.Nth(i);
+                var cells = await row.Locator(cellLocator).AllInnerTextsAsync();
+                var cellList = cells.ToList();
 
-            // Locate the cells in the specified column for each row
-            var cells = new List<ILocator>();
-            foreach (var row in rows)
-            {
-                var rowCells = await row.Locator(".rt-td").EvaluateAllAsync<ILocator[]>("(elements) => elements");
-                if (rowCells.Length > headerIndex)
+                if (headerIndex < cellList.Count && cellList[headerIndex] == cellValue)
                 {
-                    cells.Add(rowCells[headerIndex]);
-                }
-                else
-                {
-                    Assert.Fail("Row does not contain enough cells.");
+                    isCellContentPresent = true;
+                    break;
                 }
             }
-
-            // Check if the content of the first cell in the specified column matches the given value
-            if (cells.Any())
-            {
-                var cellContent = await cells.First().InnerTextAsync();
-                Assert.That(cellContent == value, $"The content of the first cell in the '{headerName}' column does not match '{value}'.");
-            }
-            else
-            {
-                Assert.Fail($"No cells found in the '{headerName}' column.");
-            }
+            Assert.That(isCellContentPresent, Is.True, $"The cell value '{cellValue}' is not present under the header '{headerName}'.");
         }
+        #endregion
 
-        public async Task IClickAddButton()
+        #region Inputs:
+        public async Task FillSearchValue(string searchValue)
         {
-            await page.GetByRole(AriaRole.Button, new() { NameString = "Add" }).ClickAsync();
+            var searchInput = page.GetByPlaceholder(searchLocator);
+
+            await searchInput.ClickAsync();
+            await searchInput.FillAsync(searchValue);
+            await searchInput.FocusAsync();
+            //await searchInput.PressAsync("Enter");
         }
-
-
-        public async Task IFillFirstName(string firstName)
+        public async Task FillFirstName(string fillText)
         {
-            await page.GetByPlaceholder("First Name").FillAsync(firstName);
-            //await page.GetByPlaceholder("First Name").PressAsync("Enter");
+            await page.GetByPlaceholder("First Name").FillAsync(fillText);
         }
-
-        public async Task IFillLastName(string lastName)
+        public async Task FillLastName(string fillText)
         {
-            await page.GetByPlaceholder("Last Name").FillAsync(lastName);
-            //await page.GetByPlaceholder("Last Name").PressAsync("Enter");
+            await page.GetByPlaceholder("Last Name").FillAsync(fillText);
         }
-
-        public async Task VerifyPopupVisible()
+        public async Task FillEmail(string fillText)
         {
-            var popup = page.Locator(".modal-content");
-            await Assertions.Expect(popup).ToBeVisibleAsync();
+            await page.GetByPlaceholder("name@example.com").FillAsync(fillText);
         }
-
-        public async Task VerifyFirstNameVisible()
+        public async Task FillAge(string fillText)
         {
-            var popup = page.Locator(".modal-content");
-            var firstName = popup.GetByPlaceholder("First Name");
-            await Assertions.Expect(firstName).ToBeVisibleAsync();
+            await page.GetByPlaceholder("Age").FillAsync(fillText);
         }
+        public async Task FillSalary(string fillText)
+        {
+            await page.GetByPlaceholder("Salary").FillAsync(fillText);
+        }
+        public async Task FillDepartment(string fillText)
+        {
+            await page.GetByPlaceholder("Department").FillAsync(fillText);
+        }
+        #endregion
+
+        #region Buttons:
+        public async Task AddButtonClick()
+        {
+            await page.GetByRole(AriaRole.Button, new() { Name = "Add" }).ClickAsync();
+        }
+        public async Task SubmitButtonCLick()
+        {
+            await page.GetByRole(AriaRole.Button, new() { Name = "Submit" }).ClickAsync();
+        }
+        public async Task ClickEdit()
+        {
+            await page.Locator("#edit-record-2").GetByRole(AriaRole.Img).ClickAsync();
+        }
+        public async Task ClickDelete()
+        {
+            await page.Locator("#delete-record-2").GetByRole(AriaRole.Img).ClickAsync();
+        }
+        #endregion
+
+        #region AddPopupVerifications:
+        public async Task VerifyAddPopupOpened()
+        {
+            await Assertions.Expect(page.Locator(addPopupLocator)).ToBeVisibleAsync();
+        }
+        public async Task VerifyFirstNameCssOption(string cssOption, string cssValue)
+        {
+            await Assertions.Expect(page.GetByPlaceholder("First Name")).ToHaveCSSAsync(cssOption, cssValue);
+        }
+        public async Task VerifyLastNameCssOption(string cssOption, string cssValue)
+        {
+            await Assertions.Expect(page.GetByPlaceholder("Last Name")).ToHaveCSSAsync(cssOption, cssValue);
+        }
+        public async Task VerifyEmailCssOption(string cssOption, string cssValue)
+        {
+            await Assertions.Expect(page.GetByPlaceholder("name@example.com")).ToHaveCSSAsync(cssOption, cssValue);
+        }
+        public async Task VerifyAgeCssOption(string cssOption, string cssValue)
+        {
+            await Assertions.Expect(page.GetByPlaceholder("Age")).ToHaveCSSAsync(cssOption, cssValue);
+        }
+        public async Task VerifySalaryCssOption(string cssOption, string cssValue)
+        {
+            await Assertions.Expect(page.GetByPlaceholder("Salary")).ToHaveCSSAsync(cssOption, cssValue);
+        }
+        public async Task VerifyDepartmentCssOption(string cssOption, string cssValue)
+        {
+            await Assertions.Expect(page.GetByPlaceholder("Department")).ToHaveCSSAsync(cssOption, cssValue);
+        }
+        #endregion
+
     }
 }

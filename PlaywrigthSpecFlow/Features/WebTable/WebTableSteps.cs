@@ -16,7 +16,7 @@ namespace PlaywrigthSpecFlow.Features.WebTable
             _WebTablesPage = new DemoQAWebTablesPage(page);
         }
 
-        [Given(@"I am on DemoQA WebTable Page")]
+        [Given(@"I am on WebTable Page")]
         public async Task WhenIOpenWebTablePage() => await _WebTablesPage.GoToDemoQaWebTablesPage();
 
         [When(@"I see the WebTable")]
