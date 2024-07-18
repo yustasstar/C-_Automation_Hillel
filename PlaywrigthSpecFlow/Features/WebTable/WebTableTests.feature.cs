@@ -114,11 +114,130 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
  testRunner.When("I see the WebTable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
+#line 15
+ testRunner.And("I see the Headers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 16
  testRunner.And(string.Format("I type \"{0}\" in the Search", email), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 17
  testRunner.Then(string.Format("I see \"{0}\" in the table", firstName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("I add item to the table")]
+        [NUnit.Framework.TestCaseAttribute("Ruby", "Frank", "ruby.frank@example.com", "34", "11000", "Marketing", null)]
+        [NUnit.Framework.TestCaseAttribute("John", "Doe", "john.doe@example.com", "28", "9000", "Sales", null)]
+        [NUnit.Framework.TestCaseAttribute("Mary", "Smith", "mary.smith@example.com", "47", "13000", "HR", null)]
+        [NUnit.Framework.TestCaseAttribute("David", "Johnson", "david.johnson@example.com", "30", "10500", "IT", null)]
+        [NUnit.Framework.TestCaseAttribute("Sara", "Brown", "sara.brown@example.com", "37", "15000", "Finance", null)]
+        [NUnit.Framework.TestCaseAttribute("James", "Wilson", "james.wilson@example.com", "40", "11500", "Operations", null)]
+        [NUnit.Framework.TestCaseAttribute("Linda", "Lee", "linda.lee@example.com", "42", "12500", "Development", null)]
+        [NUnit.Framework.TestCaseAttribute("Michael", "Clark", "michael.clark@example.com", "35", "10000", "QA", null)]
+        [NUnit.Framework.TestCaseAttribute("Laura", "Lewis", "laura.lewis@example.com", "32", "9000", "Design", null)]
+        [NUnit.Framework.TestCaseAttribute("Daniel", "Hall", "daniel.hall@example.com", "38", "12000", "Support", null)]
+        [NUnit.Framework.TestCaseAttribute("Olivia", "King", "olivia.king@example.com", "29", "8000", "Legal", null)]
+        [NUnit.Framework.TestCaseAttribute("William", "Adams", "william.adams@example.com", "43", "13000", "Insurance", null)]
+        [NUnit.Framework.TestCaseAttribute("Emma", "Scott", "emma.scott@example.com", "36", "9500", "Compliance", null)]
+        [NUnit.Framework.TestCaseAttribute("Robert", "Harris", "robert.harris@example.com", "41", "11000", "Marketing", null)]
+        [NUnit.Framework.TestCaseAttribute("Emily", "Young", "emily.young@example.com", "33", "8500", "Sales", null)]
+        [NUnit.Framework.TestCaseAttribute("Richard", "Nelson", "richard.nelson@example.com", "44", "12500", "HR", null)]
+        [NUnit.Framework.TestCaseAttribute("Amanda", "Baker", "amanda.baker@example.com", "31", "10500", "IT", null)]
+        [NUnit.Framework.TestCaseAttribute("Charles", "Carter", "charles.carter@example.com", "46", "15000", "Finance", null)]
+        [NUnit.Framework.TestCaseAttribute("Jessica", "Mitchell", "jessica.mitchell@example.com", "28", "8500", "Operations", null)]
+        [NUnit.Framework.TestCaseAttribute("Matthew", "Perez", "matthew.perez@example.com", "39", "9000", "Development", null)]
+        [NUnit.Framework.TestCaseAttribute("Jennifer", "Roberts", "jennifer.roberts@example.com", "34", "11000", "QA", null)]
+        [NUnit.Framework.TestCaseAttribute("Joshua", "Turner", "joshua.turner@example.com", "45", "12000", "Design", null)]
+        [NUnit.Framework.TestCaseAttribute("Sarah", "Phillips", "sarah.phillips@example.com", "30", "10000", "Support", null)]
+        [NUnit.Framework.TestCaseAttribute("Joseph", "Campbell", "joseph.campbell@example.com", "37", "13000", "Legal", null)]
+        [NUnit.Framework.TestCaseAttribute("Ashley", "Parker", "ashley.parker@example.com", "42", "9500", "Insurance", null)]
+        [NUnit.Framework.TestCaseAttribute("Mark", "Evans", "mark.evans@example.com", "31", "8000", "Compliance", null)]
+        [NUnit.Framework.TestCaseAttribute("Megan", "Edwards", "megan.edwards@example.com", "35", "11500", "Marketing", null)]
+        [NUnit.Framework.TestCaseAttribute("Andrew", "Collins", "andrew.collins@example.com", "43", "12500", "Sales", null)]
+        [NUnit.Framework.TestCaseAttribute("Samantha", "Stewart", "samantha.stewart@example.com", "32", "8500", "HR", null)]
+        [NUnit.Framework.TestCaseAttribute("Benjamin", "Sanchez", "benjamin.sanchez@example.com", "40", "10500", "IT", null)]
+        [NUnit.Framework.TestCaseAttribute("Hannah", "Morris", "hannah.morris@example.com", "28", "9000", "Finance", null)]
+        [NUnit.Framework.TestCaseAttribute("Lucas", "Rogers", "lucas.rogers@example.com", "38", "9500", "Operations", null)]
+        [NUnit.Framework.TestCaseAttribute("Sophia", "Reed", "sophia.reed@example.com", "34", "12000", "Development", null)]
+        [NUnit.Framework.TestCaseAttribute("Nathan", "Cook", "nathan.cook@example.com", "29", "8000", "QA", null)]
+        [NUnit.Framework.TestCaseAttribute("Mia", "Morgan", "mia.morgan@example.com", "46", "11000", "Design", null)]
+        [NUnit.Framework.TestCaseAttribute("Ethan", "Bell", "ethan.bell@example.com", "36", "10000", "Support", null)]
+        [NUnit.Framework.TestCaseAttribute("Isabella", "Murphy", "isabella.murphy@example.com", "33", "13000", "Legal", null)]
+        [NUnit.Framework.TestCaseAttribute("Logan", "Bailey", "logan.bailey@example.com", "41", "10500", "Insurance", null)]
+        [NUnit.Framework.TestCaseAttribute("Abigail", "Rivera", "abigail.rivera@example.com", "39", "9000", "Compliance", null)]
+        [NUnit.Framework.TestCaseAttribute("Ryan", "Cooper", "ryan.cooper@example.com", "32", "8500", "Marketing", null)]
+        [NUnit.Framework.TestCaseAttribute("Grace", "Richardson", "grace.richardson@example.com", "28", "11500", "Sales", null)]
+        [NUnit.Framework.TestCaseAttribute("Tyler", "Cox", "tyler.cox@example.com", "37", "10000", "HR", null)]
+        [NUnit.Framework.TestCaseAttribute("Zoey", "Howard", "zoey.howard@example.com", "40", "12000", "IT", null)]
+        [NUnit.Framework.TestCaseAttribute("Dylan", "Ward", "dylan.ward@example.com", "29", "9500", "Finance", null)]
+        [NUnit.Framework.TestCaseAttribute("Avery", "Torres", "avery.torres@example.com", "34", "13000", "Operations", null)]
+        [NUnit.Framework.TestCaseAttribute("Jack", "Peterson", "jack.peterson@example.com", "44", "10500", "Development", null)]
+        [NUnit.Framework.TestCaseAttribute("Lily", "Gray", "lily.gray@example.com", "31", "8500", "QA", null)]
+        public void IAddItemToTheTable(string firstName, string lastName, string email, string age, string salary, string department, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("FirstName", firstName);
+            argumentsOfScenario.Add("LastName", lastName);
+            argumentsOfScenario.Add("Email", email);
+            argumentsOfScenario.Add("Age", age);
+            argumentsOfScenario.Add("Salary", salary);
+            argumentsOfScenario.Add("Department", department);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I add item to the table", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 26
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 27
+ testRunner.Given("I am on WebTable Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 28
+ testRunner.When("I see the WebTable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 29
+ testRunner.And("I click Add Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 30
+ testRunner.And("I see Registration Form", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 31
+ testRunner.And(string.Format("I set FirstName to \"{0}\"", firstName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 32
+ testRunner.And(string.Format("I set LastName to \"{0}\"", lastName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 33
+ testRunner.And(string.Format("I set Email to \"{0}\"", email), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 34
+ testRunner.And(string.Format("I set Age to \"{0}\"", age), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 35
+ testRunner.And(string.Format("I set Salary to \"{0}\"", salary), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 36
+ testRunner.And(string.Format("I set Department to \"{0}\"", department), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 37
+ testRunner.And("I click Submit Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 38
+ testRunner.And("I see the WebTable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 39
+ testRunner.And(string.Format("I type \"{0}\" in the Search", email), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 40
+ testRunner.Then(string.Format("I see data in the row \"{0}\" , \"{1}\", \"{2}\", \"{3}\", \"{4}\", \"{5}\"", firstName, lastName, email, age, salary, department), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
