@@ -29,7 +29,6 @@ namespace PlaywrigthSpecFlow.Features.Account
             Assert.That(presetup.UserId, Is.Not.Null, "Account not created");
         }
 
-        //TODO: add cleanup
         [AfterFeature(@"ICreateAccountByAPI")]
         public static async Task WhenICleanupAccountByAPI(FeatureContext featureContext)
         {

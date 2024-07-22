@@ -86,7 +86,6 @@ namespace PlaywrigthSpecFlow.API.Features.Account
             return user;
         }
 
-
         //public async Task<HttpResponseMessage> GetUserById(string userId, string token)
         //{
         //    using (var requestMessage =
@@ -94,7 +93,6 @@ namespace PlaywrigthSpecFlow.API.Features.Account
         //    {
         //        requestMessage.Headers.Authorization =
         //            new AuthenticationHeaderValue("Bearer", token);
-
         //        return await Client.SendAsync(requestMessage);
         //    }
         //}
@@ -115,19 +113,6 @@ namespace PlaywrigthSpecFlow.API.Features.Account
             Console.WriteLine("Account deleted successfully.");
             return true;
         }
-
-
-        //public async Task<HttpResponseMessage> DeleteAccountByID(string userId, string token)
-        //{
-        //    using (var requestMessage =
-        //    new HttpRequestMessage(HttpMethod.Delete, Client.BaseAddress + "Account/v1/User/" + userId))
-        //    {
-        //        requestMessage.Headers.Authorization =
-        //            new AuthenticationHeaderValue("Bearer", token);
-
-        //        return await Client.SendAsync(requestMessage);
-        //    }
-        //}
     }
 }
 
