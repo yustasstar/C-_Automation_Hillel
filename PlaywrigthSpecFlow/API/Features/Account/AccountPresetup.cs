@@ -32,6 +32,7 @@ namespace PlaywrigthSpecFlow.API.Features.Account
             await account.DeleteAccountByID(UserId);
         }
         #endregion
+
         #region HelperMethods
         internal static string GetCurrentTimestamp()
         {
