@@ -15,11 +15,10 @@ namespace PlaywrigthSpecFlow.API.Features.Account
             Client = new HttpClient { BaseAddress = new Uri(baseAddress) };
         }
 
-        public async Task<string> AddUserGetId(UserModel model)
+        public async Task<string?> AddUserGetId(UserModel model)
         {
             var json = JsonConvert.SerializeObject(model);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-
             var response = await Client.PostAsync("Account/v1/User", content);
 
             if (response.StatusCode != HttpStatusCode.Created)
@@ -76,7 +75,7 @@ namespace PlaywrigthSpecFlow.API.Features.Account
 
         public async Task DeleteAccountByID(string ID)
         {
-            //TODO: implement
+            
         }
     }
 }

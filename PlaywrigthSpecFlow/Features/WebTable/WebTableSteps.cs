@@ -13,7 +13,7 @@ namespace PlaywrigthSpecFlow.Features.WebTable
         [BeforeFeature("@WebPageLogin")]
         public static async Task FirstBeforeScenario()
         {
-            _WebTablesPage = new DemoQAWebTablesPage(page);
+            _WebTablesPage = new DemoQAWebTablesPage(Page);
         }
 
         [Given(@"I am on WebTable Page")]
@@ -88,7 +88,7 @@ namespace PlaywrigthSpecFlow.Features.WebTable
         {
             List<string> checkList = new List<string> { firstName, lastName, age, email, salary, department };
 
-            var row = page.Locator(".rt-tr-group").First;
+            var row = Page.Locator(".rt-tr-group").First;
             var cells = await row.Locator(".rt-td").AllInnerTextsAsync();
             var cellList = cells.ToList();
 
