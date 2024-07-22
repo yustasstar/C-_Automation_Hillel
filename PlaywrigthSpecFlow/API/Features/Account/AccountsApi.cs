@@ -31,7 +31,7 @@ namespace PlaywrigthSpecFlow.API.Features.Account
             var createdUser = JsonConvert.DeserializeObject<User>(responseContent);
 
             Console.WriteLine("User created successfully.");
-            return createdUser.userID;
+            return createdUser?.userID;
         }
 
         public async Task<string?> GenerateToken(UserModel model)
@@ -58,25 +58,76 @@ namespace PlaywrigthSpecFlow.API.Features.Account
             var responseContent = await response.Content.ReadAsStringAsync();
             var responseToken = JsonConvert.DeserializeObject<UserToken>(responseContent);
 
-            return responseToken.token;
+            return responseToken?.token;
         }
 
-        public async Task<HttpResponseMessage> GetUserById(string userId, string token)
+        public async Task<User?> GetUserById(string userId, string token)
         {
-            using (var requestMessage =
-            new HttpRequestMessage(HttpMethod.Get, Client.BaseAddress + "Account/v1/User/" + userId))
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"Account/v1/User/{userId}");
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await Client.SendAsync(requestMessage);
+
+            if (response.StatusCode != HttpStatusCode.OK)
             {
-                requestMessage.Headers.Authorization =
-                    new AuthenticationHeaderValue("Bearer", token);
-
-                return await Client.SendAsync(requestMessage);
+                Console.WriteLine($"Error: {response.StatusCode}");
+                return null;
             }
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var user = JsonConvert.DeserializeObject<User>(responseContent);
+
+            if (user == null)
+            {
+                Console.WriteLine("Error: Failed to deserialize the user.");
+                return null;
+            }
+
+            return user;
         }
 
-        public async Task DeleteAccountByID(string ID)
+
+        //public async Task<HttpResponseMessage> GetUserById(string userId, string token)
+        //{
+        //    using (var requestMessage =
+        //    new HttpRequestMessage(HttpMethod.Get, Client.BaseAddress + "Account/v1/User/" + userId))
+        //    {
+        //        requestMessage.Headers.Authorization =
+        //            new AuthenticationHeaderValue("Bearer", token);
+
+        //        return await Client.SendAsync(requestMessage);
+        //    }
+        //}
+
+        public async Task<bool> DeleteAccountByID(string userId, string token)
         {
-            
+            var requestMessage = new HttpRequestMessage(HttpMethod.Delete, $"Account/v1/User/{userId}");
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await Client.SendAsync(requestMessage);
+
+            if (response.StatusCode != HttpStatusCode.NoContent && response.StatusCode != HttpStatusCode.OK)
+            {
+                Console.WriteLine($"Error: {response.StatusCode}");
+                return false;
+            }
+
+            Console.WriteLine("Account deleted successfully.");
+            return true;
         }
+
+
+        //public async Task<HttpResponseMessage> DeleteAccountByID(string userId, string token)
+        //{
+        //    using (var requestMessage =
+        //    new HttpRequestMessage(HttpMethod.Delete, Client.BaseAddress + "Account/v1/User/" + userId))
+        //    {
+        //        requestMessage.Headers.Authorization =
+        //            new AuthenticationHeaderValue("Bearer", token);
+
+        //        return await Client.SendAsync(requestMessage);
+        //    }
+        //}
     }
 }
 

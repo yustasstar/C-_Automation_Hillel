@@ -11,7 +11,7 @@ namespace PlaywrigthSpecFlow.Features.WebTable
         public static DemoQAWebTablesPage _WebTablesPage;
 
         [BeforeFeature("@WebPageLogin")]
-        public static async Task FirstBeforeScenario()
+        public static void FirstBeforeScenario()
         {
             _WebTablesPage = new DemoQAWebTablesPage(Page);
         }
