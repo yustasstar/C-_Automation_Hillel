@@ -1,3 +1,4 @@
+using Microsoft.Playwright;
 using PlaywrigthSpecFlow.API.Features.Account;
 using TechTalk.SpecFlow;
 
@@ -28,12 +29,11 @@ namespace PlaywrigthSpecFlow.Features.Account
             Assert.That(presetup.UserId, Is.Not.Null, "Account not created");
         }
 
-        //TODO: add cleanup
         [AfterFeature(@"ICreateAccountByAPI")]
         public static async Task WhenICleanupAccountByAPI(FeatureContext featureContext)
         {
             var presetup = featureContext.Get<AccountPresetup>("AccountApiPresetup");
-            // presetup.
+            await presetup.AccountApiCleanup();
         }
     }
 }
